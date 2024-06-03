@@ -3,18 +3,20 @@ package com.hotel.controller;
 import com.hotel.entity.Guest;
 import com.hotel.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class ReservationControllerRest {
-    @Autowired
-    private ReservationService reservationService;
+    // przykład wstrzykiwania przez konstruktor
+    private final ReservationService reservationService;
+
+    public ReservationControllerRest(ReservationService reservationService) {
+        this.reservationService = reservationService;
+    }
 
 //    @RequestMapping(method = RequestMethod.GET, name = "/guests")
 //    public List<Guest> getAllGuest(){
@@ -24,5 +26,11 @@ public class ReservationControllerRest {
     @GetMapping( "/guests")
     public List<Guest> getAllGuest(){
         return this.reservationService.getAllGuest();
+    }
+
+    @PostMapping("/guests")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Guest addGuest(@RequestBody Guest guest){
+        return reservationService.addGuest(guest);
     }
 }

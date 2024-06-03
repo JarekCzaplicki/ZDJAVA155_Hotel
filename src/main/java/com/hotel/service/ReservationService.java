@@ -12,8 +12,13 @@ import java.util.List;
 public class ReservationService {
     @Autowired
     private GuestRepository guestRepository;
+
     public List<Guest> getAllGuest() {
         return guestRepository.findAll();
 
+    }
+
+    public Guest addGuest(Guest guest) {
+        return guestRepository.save(guest);
     }
 }
