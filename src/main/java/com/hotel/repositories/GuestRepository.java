@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository;
  * @Controller - warstwa prezentacji 'WEB'
  * @RestController - warstwa prezentacji 'JSON'
  */
+@Repository // nadmiarowe ponieważ implementacja domyślna interfejsu jest juz oznaczona jako @Repository
 public interface GuestRepository extends JpaRepository<Guest, Long> {
 }
