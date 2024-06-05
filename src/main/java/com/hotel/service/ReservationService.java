@@ -79,4 +79,8 @@ public class ReservationService {
 
         return roomReservations;
     }
+
+    public List<Guest> getHotelGuests() {
+        return guestRepository.findAll();
+    }
 }
