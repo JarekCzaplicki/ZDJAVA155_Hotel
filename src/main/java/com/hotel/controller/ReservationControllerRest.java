@@ -4,6 +4,7 @@ import com.hotel.entity.Guest;
 import com.hotel.entity.Room;
 import com.hotel.model.RoomReservation;
 import com.hotel.service.ReservationService;
+import com.hotel.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,12 @@ import java.util.List;
 public class ReservationControllerRest {
     // przykład wstrzykiwania przez konstruktor
     private final ReservationService reservationService;
+    private final DateUtil dateUtil;
 
-    public ReservationControllerRest(ReservationService reservationService) {
+    public ReservationControllerRest(ReservationService reservationService
+            , DateUtil dateUtil) {
         this.reservationService = reservationService;
+        this.dateUtil = dateUtil;
     }
 
 //    @RequestMapping(method = RequestMethod.GET, name = "/guests")
@@ -49,8 +53,9 @@ public class ReservationControllerRest {
         return this.reservationService.getRooms();
     }
     @GetMapping("/reservations")
-    public List<RoomReservation> getReservation(@RequestParam(value = "date") String stringDate){
-        Date date = Date.from(Instant.parse(stringDate)); // pokazać własny formater
+    public List<RoomReservation> getReservation(@RequestParam(value = "date", required = false) String stringDate){
+//        DateUtil dateUtil = new DateUtil();
+        Date date = dateUtil.createDateFromString(stringDate);
         return this.reservationService.getReservationForDate(date);
     }
 }
