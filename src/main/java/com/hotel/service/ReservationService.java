@@ -11,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class ReservationService {
-//    @Autowired
+    //    @Autowired
     private final GuestRepository guestRepository;
     private final RoomRepository roomRepository;
     private final ReservationRepository reservationRepository;
@@ -43,7 +44,7 @@ public class ReservationService {
     public List<Room> getRooms() {
         List<Room> rooms = new ArrayList<>();
 //        this.roomRepository.findAll().forEach(rooms::add);
-        for(Room room : roomRepository.findAll()) {
+        for (Room room : roomRepository.findAll()) {
             rooms.add(room);
         }
         return rooms;
@@ -52,16 +53,30 @@ public class ReservationService {
     public List<RoomReservation> getReservationForDate(Date date) {
         List<RoomReservation> roomReservations = new ArrayList<>();
         Iterable<Room> rooms = this.roomRepository.findAll();
-        for(Room room : rooms) {
+        for (Room room : rooms) {
             RoomReservation roomReservation = new RoomReservation();
             roomReservation.setRoomId(room.getRoomId());
             roomReservation.setRoomNumber(room.getRoomNumber());
             roomReservation.setRoomName(room.getName());
 
             Iterable<Reservation> reservations = this.reservationRepository
-                    .findReservationByRoomIdAndReservationDate(room.getRoomId(), new java.sql.Date(date.getTime()));
+                    .findReservationByRoomIdAndReservationDate(room.getRoomId()
+                            , new java.sql.Date(date.getTime()));
+            for (Reservation reservation : reservations) {
+                roomReservation.setReservationDate(date);
+                Guest guest = this.guestRepository.findById(reservation.getGuestId()).orElse(null);
+                if (guest != null) {
+                    roomReservation.setGuestId(guest.getGuestId());
+                    roomReservation.setFirstName(guest.getFirstName());
+                    roomReservation.setLastName(guest.getLastName());
+                }
+                roomReservations.add(roomReservation);
+            }
 
         }
+        roomReservations.sort(Comparator.comparing(RoomReservation::getRoomName)
+                .thenComparing(RoomReservation::getRoomNumber));
+
         return roomReservations;
     }
 }

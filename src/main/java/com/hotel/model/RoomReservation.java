@@ -1,6 +1,6 @@
 package com.hotel.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class RoomReservation {
     private Long roomId;
