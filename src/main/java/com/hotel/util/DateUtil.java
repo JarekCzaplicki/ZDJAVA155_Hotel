@@ -10,10 +10,12 @@ import java.util.Date;
 public class DateUtil {
     public Date createDateFromString(String dateStr) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
         try {
-            return sdf.parse(dateStr);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+            date = sdf.parse(dateStr);
+        } catch (Exception e) {
+            date = new Date();
         }
+        return date;
     }
 }
