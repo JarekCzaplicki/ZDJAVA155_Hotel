@@ -5,16 +5,14 @@ import com.hotel.entity.Room;
 import com.hotel.model.RoomReservation;
 import com.hotel.service.ReservationService;
 import com.hotel.util.DateUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api") // localhost:8080/api
 public class ReservationControllerRest {
     // przykład wstrzykiwania przez konstruktor
     private final ReservationService reservationService;
@@ -31,7 +29,7 @@ public class ReservationControllerRest {
 //        return this.reservationService.getAllGuest();
 //    }
 
-    @GetMapping( "/guests")
+    @GetMapping( "/guests")// localhost:8080/api/guests
     public List<Guest> getAllGuest(){
         return this.reservationService.getAllGuest();
     }
